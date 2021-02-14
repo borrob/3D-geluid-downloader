@@ -14,9 +14,15 @@ overzicht te maken van de relevante kaartbladen, deze te downloaden en te combin
 samengevoegd bestand. Daar kan deze tool misschien bij helpen.
 
 ## Werking tool
-Maak een shape bestand (polygoon) van het gebied waarin je geintreseerd bent en noem die
-`roi.shp`. Zet dit shape-bestand in deze directory (direct naast het script `downloader.sh` en
-vuur het script `downloader.sh` af. Het script zoekt de relevante kaartbladnummers op en downloadt
+Maak een shape bestand (polygoon) van het gebied waarin je geintreseerd bent (bijvoorbeeld: 
+`roi.shp`). 
+Vuur het script `downloader.sh` af en geeef als argument het pad naar de roi.shp mee. Bijvoorbeeld:
+
+```bash
+./downloader.sh roi.shp
+```
+
+Het script zoekt de relevante kaartbladnummers op en downloadt
 de relevante files van PDOK. De bestanden worden uitgepakt en geclipt met de `roi.shp`.
 Uiteindelijk is er een nieuwe geopackage `dataset.gpkg` met daarin drie layers voor de
 bodemvlakken, TIN en gebouwen.
@@ -33,4 +39,4 @@ uit de `GDAL` package.Het is bedoeld om op een linux-omgeving te worden gedraait
 # Kaartbladen index
 
 De index van de AHN3 kaartbladen in de `hulpdata.gpkg` is afkomstig van PDOK en deze dataset is
-vrij gepubliceerd onder de Creative Commones Licentie.
+vrij gepubliceerd onder de Creative Commons Licentie.
