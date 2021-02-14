@@ -29,14 +29,17 @@ bodemvlakken, TIN en gebouwen.
 
 Deze kaartlagen zijn in een GIS-software in te laden, waarin nog mogelijke nabwerkingen gedaan
 kunnen worden en een export kan worden gemaakt die ingelezen kan worden door een
-geluidrekenprogramma.
+geluidrekenprogramma. **Let op:** het TIN-bestand met hoogtelijnen kan behoorlijk groot worden van
+bestandsgrootte en aantal features.
 
 ## Afhankelijkheden
 
 De tool maakt gebruikt van `unzip`, `sed`, `curl`, `ogr2ogr` en `ogrinfo`. De laatste twee komen
-uit de `GDAL` package.Het is bedoeld om op een linux-omgeving te worden gedraait via `bash`.
+uit de `GDAL` package. Het is bedoeld om op een linux-omgeving te worden gedraait via `bash`.
 
 # Kaartbladen index
 
 De index van de AHN3 kaartbladen in de `hulpdata.gpkg` is afkomstig van PDOK en deze dataset is
-vrij gepubliceerd onder de Creative Commons Licentie.
+vrij gepubliceerd onder de Creative Commons Licentie. Zie de [beschrijving op het Nationaal
+Georegister](https://www.nationaalgeoregister.nl/geonetwork/srv/dut/catalog.search#/metadata/41daef8b-155e-4608-b49c-c87ea45d931c?tab=general)
+voor meer informatie.
