@@ -71,4 +71,4 @@ ogrinfo dataset.gpkg -sql "drop table rtree_tin_geom"
 ogrinfo dataset.gpkg -sql "drop table rtree_gebouwen_geom"
 
 # Optie: verwijderen downloadmap om ruimte vrij te maken
-# rm -rd download
+# rm -rf download
