@@ -3,7 +3,7 @@
 # Opschonen oude runs
 rm -f dataset.gpkg
 rm -f bladnummers.csv
-#rm -rf download
+rm -rf download
 mkdir download
 mkdir download/tin
 mkdir download/bodem
@@ -21,8 +21,8 @@ while read -u 10 p; do
     curl -L -o "download/bodem/bodem_$p.zip" "https://download.pdok.nl/kadaster/3d-geluid/v1_0/2019/bodemvlakken/${p}_2019_bodemvlakken.zip"
 done 10<bladnummers.csv
 
-## Downloaden gebouwen
-#curl -L -o "download/gebouwen/gebouwen.zip" "https://download.pdok.nl/kadaster/3d-geluid/v1_0/2019/gebouwen/2019_NL_3d_geluid_gebouwen.zip"
+# Downloaden gebouwen
+curl -L -o "download/gebouwen/gebouwen.zip" "https://download.pdok.nl/kadaster/3d-geluid/v1_0/2019/gebouwen/2019_NL_3d_geluid_gebouwen.zip"
 
 # Unzip
 pushd download/bodem
@@ -39,12 +39,12 @@ for f in *.zip; do
 done
 popd
 
-#pushd download/gebouwen
-#for f in *.zip; do
-#    unzip -o $f
-#    rm $f
-#done
-#popd
+pushd download/gebouwen
+for f in *.zip; do
+    unzip -o $f
+    rm $f
+done
+popd
 
 # Bodemvlakken knippen
 for f in download/bodem/*.gpkg; do
