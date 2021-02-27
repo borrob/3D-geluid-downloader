@@ -16,14 +16,15 @@ samengevoegd bestand. Daar kan deze tool misschien bij helpen.
 ## Werking tool
 Maak een shape bestand (polygoon) van het gebied waarin je geintreseerd bent (bijvoorbeeld: 
 `roi.shp`). 
-Vuur het script `downloader.sh` af en geeef als argument het pad naar de roi.shp mee. Bijvoorbeeld:
+Vuur het script `downloader.sh` af en geeef als argument het pad naar de roi.shp mee (gebruik
+hiervoor de `-i` aanduiging. Bijvoorbeeld:
 
 ```bash
-./downloader.sh roi.shp
+./downloader.sh -i roi.shp
 ```
 
 Het script zoekt de relevante kaartbladnummers op en downloadt
-de relevante files van PDOK. De bestanden worden uitgepakt en geclipt met de `roi.shp`.
+de relevante files van PDOK. De bestanden worden uitgepakt.
 Uiteindelijk is er een nieuwe geopackage `dataset.gpkg` met daarin drie layers voor de
 bodemvlakken, TIN en gebouwen.
 
@@ -31,6 +32,14 @@ Deze kaartlagen zijn in een GIS-software in te laden, waarin nog mogelijke nabwe
 kunnen worden en een export kan worden gemaakt die ingelezen kan worden door een
 geluidrekenprogramma. **Let op:** het TIN-bestand met hoogtelijnen kan behoorlijk groot worden van
 bestandsgrootte en aantal features.
+
+### Clippen
+Het is ook mogelijk om de TIN en de bodemvlakken meteen al te clippen met de inputshape (de
+gebouwen worden al gelclipt). Gebruik hier voor de `-c` vlag:
+
+```bash
+./downloader.sh -i roi.shop -c
+```
 
 ## Afhankelijkheden
 
