@@ -39,7 +39,7 @@ while read -u 10 p; do
 done 10<bladnummers.csv
 
 # Downloaden gebouwen
-#curl -L -o "download/gebouwen/gebouwen.zip" "https://download.pdok.nl/kadaster/3d-geluid/v1_0/2019/gebouwen/2019_NL_3d_geluid_gebouwen.zip"
+curl -L -o "download/gebouwen/gebouwen.zip" "https://download.pdok.nl/kadaster/3d-geluid/v1_0/2019/gebouwen/2019_NL_3d_geluid_gebouwen.zip"
 
 # Unzip
 pushd download/bodem
@@ -56,53 +56,57 @@ for f in *.zip; do
 done
 popd
 
-#pushd download/gebouwen
-#for f in *.zip; do
-#    unzip -o $f
-#    rm $f
-#done
-#popd
+pushd download/gebouwen
+for f in *.zip; do
+    unzip -o $f
+    rm $f
+done
+popd
+
+# Voor clippen: temp dataset aanmaken
+if [ "${clip}" = true ]; then
+    output="data_tmp.gpkg"
+else
+    output="dataset.gpkg"
+fi
+echo ${output}
 
 # Bodemvlakken plakken
 for f in download/bodem/*.gpkg; do
     echo "Bodem toevoegen: $f"
     # Hier enkel bodemfactor = 1 meenemen (naar smaak aanpassen)
-    ogr2ogr -f gpkg -where "bodemfactor=1" -append -t_srs EPSG:28992 dataset.gpkg $f -nln bodem -nlt POLYGON
+    ogr2ogr -f gpkg -where "bodemfactor=1" -append -t_srs EPSG:28992 ${output} $f -nln bodem -nlt POLYGON
 done
 
 # TIN plakken
 for f in download/tin/*.gpkg; do
     echo "TIN toevoegen: $f"
-    ogr2ogr -progress -f gpkg -append -t_srs EPSG:28992 dataset.gpkg $f -nln tin -nlt POLYGON
+    ogr2ogr -progress -f gpkg -append -t_srs EPSG:28992 ${output} $f -nln tin -nlt POLYGON
 done
 
-## Gebouwen knippen
-#for f in download/gebouwen/*.gpkg; do
-#    echo "Gebouwen clippen en toevoegen"
-#    ogr2ogr -progress -f gpkg -append -t_srs EPSG:28992 dataset.gpkg "$f" -nln gebouwen -clipsrc ${input_file} -nlt POLYGON
-#done
+# Gebouwen knippen
+for f in download/gebouwen/*.gpkg; do
+    echo "Gebouwen clippen en toevoegen"
+    ogr2ogr -progress -f gpkg -append -t_srs EPSG:28992 dataset.gpkg "$f" -nln gebouwen -clipsrc ${input_file} -nlt POLYGON
+done
 
 # Bodemvlakken knippen
 if [ "$clip" = true ]; then
-    ogr2ogr -progress -f gpkg dataset.gpkg dataset.gpkg bodem -nln bodemvlakken_clip -clipsrc ${input_file} -nlt POLYGON 
-    ogrinfo dataset.gpkg -sql "drop table bodem"
+    ogr2ogr -progress -f gpkg -append dataset.gpkg ${output} bodem -nln bodem -clipsrc ${input_file} -nlt POLYGON 
 fi
 
 # TIN knippen
 if [ "$clip" = true ]; then
-    ogr2ogr -progress -f gpkg dataset.gpkg dataset.gpkg tin -nln tin_clip -clipsrc ${input_file} -nlt POLYGON 
-    ogrinfo dataset.gpkg -sql "drop table tin"
+    ogr2ogr -progress -f gpkg -append dataset.gpkg ${output} tin -nln tin -clipsrc ${input_file} -nlt POLYGON 
 fi
 
 # Opschonen voor QGIS
-#ogrinfo dataset.gpkg -sql "drop table rtree_gebouwen_geom"
+ogrinfo dataset.gpkg -sql "drop table rtree_gebouwen_geom"
+ogrinfo dataset.gpkg -sql "drop table rtree_bodem_geom"
+ogrinfo dataset.gpkg -sql "drop table rtree_tin_geom"
 if [ "$clip" = true ]; then
-    ogrinfo dataset.gpkg -sql "drop table rtree_bodem_clip_geom"
-    ogrinfo dataset.gpkg -sql "drop table rtree_tin_clip_geom"
-else
-    ogrinfo dataset.gpkg -sql "drop table rtree_bodem_geom"
-    ogrinfo dataset.gpkg -sql "drop table rtree_tin_geom"
+    rm -f data_tmp.gpkg
 fi
 
-## Optie: verwijderen downloadmap om ruimte vrij te maken
-## rm -rf download
+# Optie: verwijderen downloadmap om ruimte vrij te maken
+rm -rf download
