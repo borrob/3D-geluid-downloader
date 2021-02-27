@@ -41,6 +41,9 @@ gebouwen worden al gelclipt). Gebruik hier voor de `-c` vlag:
 ./downloader.sh -i roi.shop -c
 ```
 
+Het clippen van de TIN en de bodemvlakken is misschien niet per se nodig, maar het vergt wel een
+behoorlijke aanslag op de processor en doorlooptijd.
+
 ## Afhankelijkheden
 
 De tool maakt gebruikt van `unzip`, `sed`, `curl`, `ogr2ogr` en `ogrinfo`. De laatste twee komen
