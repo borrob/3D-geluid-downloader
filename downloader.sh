@@ -16,13 +16,13 @@ sed -i -e '1d' bladnummers.csv # header line verwijderen
 # Downloaden TIN en bodemvlakken
 while read -u 10 p; do
     echo "Downloaden van TIN bladnummer: $p"
-    curl -L -o "download/tin/tin_$p.zip" "https://download.pdok.nl/kadaster/3d-geluid/v1_0/2019/tin/${p}_2019_TIN.zip"
+    curl -L --retry 3 -o "download/tin/tin_$p.zip" "https://download.pdok.nl/kadaster/3d-geluid/v1_0/2019/tin/${p}_2019_TIN.zip"
     echo "Downloaden van bodemvlak bladnummer: $p"
-    curl -L -o "download/bodem/bodem_$p.zip" "https://download.pdok.nl/kadaster/3d-geluid/v1_0/2019/bodemvlakken/${p}_2019_bodemvlakken.zip"
+    curl -L --retry 3 -o "download/bodem/bodem_$p.zip" "https://download.pdok.nl/kadaster/3d-geluid/v1_0/2019/bodemvlakken/${p}_2019_bodemvlakken.zip"
 done 10<bladnummers.csv
 
 # Downloaden gebouwen
-curl -L -o "download/gebouwen/gebouwen.zip" "https://download.pdok.nl/kadaster/3d-geluid/v1_0/2019/gebouwen/2019_NL_3d_geluid_gebouwen.zip"
+curl -L --retry 3 -o "download/gebouwen/gebouwen.zip" "https://download.pdok.nl/kadaster/3d-geluid/v1_0/2019/gebouwen/2019_NL_3d_geluid_gebouwen.zip"
 
 # Unzip
 pushd download/bodem
