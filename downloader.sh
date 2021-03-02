@@ -14,9 +14,6 @@ if [ "$input_file" == '' ]; then
     exit 1
 fi
 
-echo ${clip}
-echo ${input_file}
-
 # Opschonen oude runs
 rm -f dataset.gpkg
 rm -f bladnummers.csv
